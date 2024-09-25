@@ -3,22 +3,26 @@
 # POSTGRES_PASSWORD: Jesus556    --->>> una clave que ud. elija
 # POSTGRES_DB: Prueba            --->>> la Base de Datos deberá tener el nombre de Prueba 
 
-version: '1.1'
+version: '3.1'
 
 services:
-
   db:
-    image: postgres
+    image: mysql:latest
     restart: always
-    ports:
-      - "5432:5432"
     environment:
-      POSTGRES_USER: olmos
-      POSTGRES_PASSWORD: nahue1123
-      POSTGRES_DB: Prueba
-
-  adminer:
-    image: adminer
-    restart: always
+      MYSQL_ROOT_PASSWORD: rootpassword  # Cambia esta contraseña por una segura
+      MYSQL_DATABASE: mydatabase          # Nombre de la base de datos inicial
+      MYSQL_USER: user                    # Nombre del usuario
+      MYSQL_PASSWORD: userpassword        # Contraseña del usuario
     ports:
-      - 8080:8080
+      - "3306:3306"                       # Exponer el puerto 3306
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    restart: always
+    environment:
+      PMA_HOST: db                        # Nombre del servicio de la base de datos
+      PMA_PORT: 3306                      # Puerto de la base de datos
+      MYSQL_ROOT_PASSWORD: rootpassword   # Debe coincidir con la contraseña de root en el servicio db
+    ports:
+      - "8080:80"                         # Exponer el puerto 8080 para phpMyAdmin
